@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  namespace: ProjetodaRede  # Certifique-se de que o Ingress e o Service estão no mesmo namespace
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}], {"HTTPS": 443}]'
+spec:
+  rules:
+  - host: <your-alb-dns-name>.amazonaws.com  # Substitua com o DNS gerado do ALB
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 5000
